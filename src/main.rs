@@ -109,16 +109,28 @@ fn main() {
     loop {
         board.print();
 
-        println!("Your move (e.g. 'e4'): ");
+        // pure coordinate notation for now
+        println!("Your move (e.g. 'e2e4'): ");
         let mut input = String::new();
         io::stdin()
             .read_line(&mut input)
             .expect("Failed to read line");
 
         let input = input.trim();
+        if input.len() != 4 {
+            println!("Invalid input. Please enter your move in the format 'e2e4'.");
+            continue;
+        }
 
-        // TODO: validate input len
+        // extract source and destination info
+        let source_col = input.chars().nth(0).unwrap() as usize - 'a' as usize;
+        let source_row = 8 - input.chars().nth(1).unwrap().to_digit(10).unwrap() as usize;
+        let dest_col = input.chars().nth(2).unwrap() as usize - 'a' as usize;
+        let dest_row = 8 - input.chars().nth(3).unwrap().to_digit(10).unwrap() as usize;
 
-        println!("Your Move IS {}", input);
+        println!("{}", source_col);
+        println!("{}", source_row);
+        println!("{}", dest_col);
+        println!("{}", dest_row);
     }
 }
