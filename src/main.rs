@@ -1,3 +1,5 @@
+use std::io;
+
 #[derive(Debug, Clone, Copy)]
 pub enum PieceType {
     Pawn,
@@ -103,5 +105,20 @@ impl Board {
 fn main() {
     let mut board = Board::new();
     board.init();
-    board.print();
+
+    loop {
+        board.print();
+
+        println!("Your move (e.g. 'e4'): ");
+        let mut input = String::new();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
+
+        let input = input.trim();
+
+        // TODO: validate input len
+
+        println!("Your Move IS {}", input);
+    }
 }
