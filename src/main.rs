@@ -20,6 +20,7 @@ pub struct Square {
     piece_color: Option<PieceColor>,
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct Board(pub [[Square; 8]; 8]);
 
 impl Board {
@@ -33,20 +34,51 @@ impl Board {
         squares
     }
     pub fn init(&mut self) {
+        let white_back_rank = [
+            PieceType::Rook,
+            PieceType::Knight,
+            PieceType::Bishop,
+            PieceType::Queen,
+            PieceType::King,
+            PieceType::Bishop,
+            PieceType::Knight,
+            PieceType::Rook,
+        ];
+
+        let black_back_rank = [
+            PieceType::Rook,
+            PieceType::Knight,
+            PieceType::Bishop,
+            PieceType::Queen,
+            PieceType::King,
+            PieceType::Bishop,
+            PieceType::Knight,
+            PieceType::Rook,
+        ];
+
         for col in 0..8 {
-            self.0[1][col] = Square {
+            self.0[7][col] = Square {
+                piece_type: Some(white_back_rank[col]),
+                piece_color: Some(PieceColor::White),
+            };
+
+            self.0[6][col] = Square {
                 piece_type: Some(PieceType::Pawn),
                 piece_color: Some(PieceColor::White),
             };
-        }
 
-        for col in 0..8 {
-            self.0[6][col] = Square {
+            self.0[1][col] = Square {
                 piece_type: Some(PieceType::Pawn),
+                piece_color: Some(PieceColor::Black),
+            };
+
+            self.0[0][col] = Square {
+                piece_type: Some(black_back_rank[col]),
                 piece_color: Some(PieceColor::Black),
             };
         }
     }
+    // maybe implement display for board?
     pub fn print(&self) {
         for row in 0..8 {
             for col in 0..8 {
