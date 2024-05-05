@@ -1,7 +1,3 @@
-use crossterm::{
-    style::{Color, Print, ResetColor},
-    ExecutableCommand,
-};
 use std::io;
 
 #[derive(Debug, Clone, Copy)]
