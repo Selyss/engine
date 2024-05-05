@@ -134,6 +134,14 @@ impl Board {
             (dest_row_index, dest_col_index),
         ))
     }
+    pub fn perform_move(&mut self, source: (usize, usize), destination: (usize, usize)) {
+        let piece = self.0[source.0][source.1];
+        self.0[destination.0][destination.1] = piece;
+        self.0[source.0][source.1] = Square {
+            piece_type: None,
+            piece_color: None,
+        };
+    }
 }
 
 fn main() {
@@ -159,6 +167,7 @@ fn main() {
         match chess_move {
             Some((source, destination)) => {
                 println!("Parsed move: {:?} to {:?}", source, destination);
+                board.perform_move(source, destination);
             }
             None => println!("Invalid input. Please enter your move in the format 'e2e4'."),
         }
