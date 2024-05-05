@@ -86,19 +86,53 @@ impl Board {
             for col in 0..8 {
                 print!(
                     "{}",
-                    match self.0[row][col].piece_type {
-                        Some(PieceType::Pawn) => 'P',
-                        Some(PieceType::Knight) => 'N',
-                        Some(PieceType::Bishop) => 'B',
-                        Some(PieceType::Rook) => 'R',
-                        Some(PieceType::Queen) => 'Q',
-                        Some(PieceType::King) => 'K',
-                        None => '.',
+                    match (self.0[row][col].piece_type, self.0[row][col].piece_color) {
+                        (Some(PieceType::Pawn), Some(PieceColor::White)) => '♟',
+                        (Some(PieceType::Pawn), Some(PieceColor::Black)) => '♙',
+                        (Some(PieceType::Knight), Some(PieceColor::White)) => '♞',
+                        (Some(PieceType::Knight), Some(PieceColor::Black)) => '♘',
+                        (Some(PieceType::Bishop), Some(PieceColor::White)) => '♝',
+                        (Some(PieceType::Bishop), Some(PieceColor::Black)) => '♗',
+                        (Some(PieceType::Rook), Some(PieceColor::White)) => '♜',
+                        (Some(PieceType::Rook), Some(PieceColor::Black)) => '♖',
+                        (Some(PieceType::Queen), Some(PieceColor::White)) => '♛',
+                        (Some(PieceType::Queen), Some(PieceColor::Black)) => '♕',
+                        (Some(PieceType::King), Some(PieceColor::White)) => '♚',
+                        (Some(PieceType::King), Some(PieceColor::Black)) => '♔',
+                        _ => '.',
                     }
                 );
             }
             println!();
         }
+    }
+    pub fn parse_move(&self, input: &str) -> Option<((usize, usize), (usize, usize))> {
+        if input.len() != 4 {
+            return None;
+        }
+
+        let source_col = input.chars().nth(0)?;
+        let source_row = input.chars().nth(1)?;
+        let dest_col = input.chars().nth(2)?;
+        let dest_row = input.chars().nth(3)?;
+
+        let source_col_index = (source_col as usize) - ('a' as usize);
+        let source_row_index = 8 - source_row.to_digit(10)? as usize;
+        let dest_col_index = (dest_col as usize) - ('a' as usize);
+        let dest_row_index = 8 - dest_row.to_digit(10)? as usize;
+
+        if source_col_index >= 8
+            || source_row_index >= 8
+            || dest_col_index >= 8
+            || dest_row_index >= 8
+        {
+            return None;
+        }
+
+        Some((
+            (source_row_index, source_col_index),
+            (dest_row_index, dest_col_index),
+        ))
     }
 }
 
@@ -121,16 +155,12 @@ fn main() {
             println!("Invalid input. Please enter your move in the format 'e2e4'.");
             continue;
         }
-
-        // extract source and destination info
-        let source_col = input.chars().nth(0).unwrap() as usize - 'a' as usize;
-        let source_row = 8 - input.chars().nth(1).unwrap().to_digit(10).unwrap() as usize;
-        let dest_col = input.chars().nth(2).unwrap() as usize - 'a' as usize;
-        let dest_row = 8 - input.chars().nth(3).unwrap().to_digit(10).unwrap() as usize;
-
-        println!("{}", source_col);
-        println!("{}", source_row);
-        println!("{}", dest_col);
-        println!("{}", dest_row);
+        let chess_move = board.parse_move(input);
+        match chess_move {
+            Some((source, destination)) => {
+                println!("Parsed move: {:?} to {:?}", source, destination);
+            }
+            None => println!("Invalid input. Please enter your move in the format 'e2e4'."),
+        }
     }
 }
