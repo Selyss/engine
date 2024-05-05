@@ -23,5 +23,17 @@ fn main() {
 
     pub struct Board(pub [[Square; 8]; 8]);
 
-    impl Board {}
+    impl Board {
+        pub fn new() -> Self {
+            let squares = Board(
+                [[Square {
+                    piece_type: None,
+                    piece_color: None,
+                }; 8]; 8],
+            );
+            squares
+        }
+        pub fn init(&mut self) {}
+    }
+    Board::new();
 }
