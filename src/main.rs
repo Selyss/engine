@@ -1,4 +1,4 @@
-use std::io;
+use std::io::{self, BufRead};
 
 #[derive(Debug, Clone, Copy)]
 pub enum PieceType {
@@ -122,5 +122,23 @@ fn main() {
     let mut board = Board::new();
     board.init();
 
-    loop {}
+    let stdin = io::stdin();
+    for line in stdin.lock().lines() {
+        let input = line.unwrap();
+        if input.starts_with("uci") {
+            println!("id name engine");
+            println!("id author Selyss");
+            println!("uciok");
+        } else if input.starts_with("isready") {
+            println!("readyok");
+        } else if input.starts_with("ucinewgame") {
+            board.init();
+        } else if input.starts_with("position") {
+            todo!()
+        } else if input.starts_with("go") {
+            todo!()
+        } else if input.starts_with("quit") {
+            break;
+        }
+    }
 }
