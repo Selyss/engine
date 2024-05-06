@@ -80,32 +80,6 @@ impl Board {
             };
         }
     }
-    // maybe implement display for board?
-    pub fn print(&self) {
-        for row in 0..8 {
-            for col in 0..8 {
-                print!(
-                    "{}",
-                    match (self.0[row][col].piece_type, self.0[row][col].piece_color) {
-                        (Some(PieceType::Pawn), Some(PieceColor::White)) => '♟',
-                        (Some(PieceType::Pawn), Some(PieceColor::Black)) => '♙',
-                        (Some(PieceType::Knight), Some(PieceColor::White)) => '♞',
-                        (Some(PieceType::Knight), Some(PieceColor::Black)) => '♘',
-                        (Some(PieceType::Bishop), Some(PieceColor::White)) => '♝',
-                        (Some(PieceType::Bishop), Some(PieceColor::Black)) => '♗',
-                        (Some(PieceType::Rook), Some(PieceColor::White)) => '♜',
-                        (Some(PieceType::Rook), Some(PieceColor::Black)) => '♖',
-                        (Some(PieceType::Queen), Some(PieceColor::White)) => '♛',
-                        (Some(PieceType::Queen), Some(PieceColor::Black)) => '♕',
-                        (Some(PieceType::King), Some(PieceColor::White)) => '♚',
-                        (Some(PieceType::King), Some(PieceColor::Black)) => '♔',
-                        _ => '.',
-                    }
-                );
-            }
-            println!();
-        }
-    }
     pub fn parse_move(&self, input: &str) -> Option<((usize, usize), (usize, usize))> {
         if input.len() != 4 {
             return None;
@@ -148,28 +122,5 @@ fn main() {
     let mut board = Board::new();
     board.init();
 
-    loop {
-        board.print();
-
-        // pure coordinate notation for now
-        println!("Your move (e.g. 'e2e4'): ");
-        let mut input = String::new();
-        io::stdin()
-            .read_line(&mut input)
-            .expect("Failed to read line");
-
-        let input = input.trim();
-        if input.len() != 4 {
-            println!("Invalid input. Please enter your move in the format 'e2e4'.");
-            continue;
-        }
-        let chess_move = board.parse_move(input);
-        match chess_move {
-            Some((source, destination)) => {
-                println!("Parsed move: {:?} to {:?}", source, destination);
-                board.perform_move(source, destination);
-            }
-            None => println!("Invalid input. Please enter your move in the format 'e2e4'."),
-        }
-    }
+    loop {}
 }
